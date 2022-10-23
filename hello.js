@@ -44,7 +44,7 @@ const onksSuara = (kortit) => {
   return { osuma: returnable, teksti: 'Viis putkee.' }
 }
 
-const onksNelkkuiset = (kortit) => {
+const onksSamojaMonta = (kuiMontaSamaa, teksti) => (kortit) => {
   const arvot = kortit.reduce((acc, it) => {
     if (acc[it.arvo]) {
       acc[it.arvo] = [...acc[it.arvo], it.arvo]
@@ -53,34 +53,14 @@ const onksNelkkuiset = (kortit) => {
     }
     return acc
   }, {})
-  const returnable = Object.values(arvot).some(it => it.length === 4)
-  return { osuma: returnable, teksti: 'Katos nait, nelkut.' }
-}
-const onkoNamaKolmikkoiset = (kortit) => {
-  const arvot = kortit.reduce((acc, it) => {
-    if (acc[it.arvo]) {
-      acc[it.arvo] = [...acc[it.arvo], it.arvo]
-    } else {
-      acc[it.arvo] = [it.arvo]
-    }
-    return acc
-  }, {})
-  const returnable = Object.values(arvot).some(it => it.length === 3)
-  return { osuma: returnable, teksti: 'Kolomoset! Kolomoset!' }
+  const returnable = Object.values(arvot).some(it => it.length === kuiMontaSamaa)
+  return { osuma: returnable, teksti }
 }
 
-const onksPari = (kortit) => {
-  const arvot = kortit.reduce((acc, it) => {
-    if (acc[it.arvo]) {
-      acc[it.arvo] = [...acc[it.arvo], it.arvo]
-    } else {
-      acc[it.arvo] = [it.arvo]
-    }
-    return acc
-  }, {})
-  const returnable = Object.values(arvot).some(it => it.length === 2)
-  return { osuma: returnable, teksti: 'Ei mul oo ku pari :/' }
-}
+
+const onksNelkkuiset = onksSamojaMonta(4, 'Katos nait, nelkut.');
+const onkoNamaKolmikkoiset = onksSamojaMonta(3, 'Kolomoset! Kolomoset!');
+const onksPari = onksSamojaMonta(2, 'Ei mul oo ku pari :/');
 
 const onksPariParia = (kortit) => {
   const [eka, toka, kolkki, nelkku, femma] = kortit.sort((a, b) => a.arvo - b.arvo)
